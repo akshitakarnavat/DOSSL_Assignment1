@@ -1,0 +1,122 @@
+<html>
+	<head>
+		<title>Student Task Manager</title>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	</head>
+	<body>
+	
+		<section id="form"  class="jumbotron">
+		
+			<h1>Wonderful Task Manager</h1>
+			<hr/>
+			
+			<form  method="post" onsubmit="javascript: addTask();return false;  ">
+				
+				
+				<div class="row">
+					<div class="col-md-7" >
+						
+						<input type="text" name="task_name" class="form-control" id="task_name" placeholder="Task name here.." value="" />
+						
+					</div>
+					<div class="col-md-4">
+						<button type="button" class="btn btn-primary" onclick="javascript: addTask();">Add</button>
+					</div>
+				</div>	
+				<input type="hidden" value="0" id="counter" />
+			</form>
+			
+		</section>
+
+		<section id="tasks">
+		
+			<table width="50%" id="tasks_table" class="table table-dark" >
+				<thead class="thead-dark">
+					<tr>
+						<td>
+							<h5>Done</h5>
+						</td>
+						<td>
+							<h5>Name</h5>
+						</td>
+						<td>
+							<h5>Delete</h5>
+						</td>
+					</tr>
+				</thead>
+				
+			</table>
+			
+		</section>
+	
+	<script language="JavaScript">
+	
+		function addTask(){
+			let taskName = document.getElementById("task_name").value;
+			let counter	 = document.getElementById("counter").value;
+			
+			// Check if the field is empty.
+			if( taskName === "" )
+			{
+				alert("Please type the task name before adding");
+				document.getElementById("task_name").focus();
+			} else 
+			{
+				// We have a name, so lets add it to the propper section
+				let table = document.getElementById("tasks_table");
+				let doneField = '<input type="checkbox" class="form-control" style="width: 20px;" onclick="doneRow(' + counter + ');" id="done_field_' + counter + '">';
+				
+				let deleteField = '<button class="btn btn-danger btn-sm" onclick="deleteRow(' + counter + ');">X</button>';
+				
+				let row = '<td>' + doneField + '</td>' + '<td>' + taskName + '</td>'  + '<td>' + deleteField + '</td>';
+				
+				let tr = document.createElement('tr');
+				tr.setAttribute("id", "row_"+counter);
+				tr.setAttribute("style", "line-height: 2");
+				tr.innerHTML = row;
+				
+				table.appendChild( tr );
+			}
+			
+			// clean the field
+			document.getElementById("task_name").value = "";
+			document.getElementById("counter").value++;
+		} 
+		
+		
+		// Make sure to remove the row given as a parameter
+		function deleteRow( rowNum ) 
+		{
+			let row = document.getElementById( 'row_' + rowNum );
+			row.parentNode.removeChild( row );
+		}
+		
+		// Make sure to complete or uncomplete the row given as a parameter
+		function doneRow( rowNum ) 
+		{
+			// First, need to check if it was unchecked
+			let statusField = document.getElementById( 'done_field_' + rowNum ).checked;
+			let row = document.getElementById( 'row_' + rowNum );
+			
+			if( statusField ) 
+			{
+				// It means it has been checked so marks the row as done
+				row.style["text-decoration"] = "line-through";
+				row.style["color"] = "red";
+			} else 
+			{
+				row.style["text-decoration"] = "none";
+				row.style["color"] = "white";
+			}
+		}
+		
+	</script>
+	
+	</body>
+</html>
